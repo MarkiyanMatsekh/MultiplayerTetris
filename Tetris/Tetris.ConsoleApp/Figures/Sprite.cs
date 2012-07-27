@@ -12,6 +12,7 @@ namespace Tetris.Implementation.Figures
 
         public Sprite(Color[,] layout)
         {
+            _size = new Size(layout.GetLength(0), layout.GetLength(1));
             _layout = layout;
         }
         public Sprite(Color fillColor, int[,] layout)
@@ -42,6 +43,14 @@ namespace Tetris.Implementation.Figures
                     _layout[i, j] = colorMapping[layout[i, j]];
 
         }
+        protected Sprite(ISprite other)
+        {
+            _size = other.Size;
+            _layout = new Color[_size.Width, _size.Height];
+            for (int i = 0; i < _size.Width; i++)
+                for (int j = 0; j < _size.Height; j++)
+                    _layout[i, j] = other[i, j];
+        }
         
         public Size Size
         {
@@ -62,6 +71,13 @@ namespace Tetris.Implementation.Figures
         public ModifyableSprite(Color[,] layout) : base(layout) {}
         public ModifyableSprite(Color fillColor, int[,] layout) : base(fillColor, layout) {}
         public ModifyableSprite(IDictionary<short, Color> colorMapping, short[,] layout) : base(colorMapping, layout) {}
+        public ModifyableSprite(ISprite other) : base(other) {}
+
+        public new Color this[int x, int y]
+        {
+            get { return _layout[x, y]; }
+            set { _layout[x, y] = value; }
+        }
 
     }
 }

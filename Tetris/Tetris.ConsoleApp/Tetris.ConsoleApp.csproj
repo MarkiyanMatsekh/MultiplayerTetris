@@ -52,6 +52,7 @@
     <Compile Include="classes\Offset.cs" />
     <Compile Include="classes\RotationDirection.cs" />
     <Compile Include="classes\Size.cs" />
+    <Compile Include="classes\UserInputListener.cs" />
     <Compile Include="Figures\FigureBase.cs" />
     <Compile Include="Figures\FigureI.cs" />
     <Compile Include="Figures\FigureJ.cs" />

@@ -41,13 +41,19 @@ namespace Tetris.Implementation.Figures
             return new GenericFigure(_positions, _positions.GetNextPosition(_positionNumber), _placement);
         }
 
-        public bool IsFullyInside(Size size)
+        public IFigure MoveDown()
         {
-            return _placement.Left >= 0 &&
-                   _placement.Top >= 0 &&
-                   _placement.Left + _sprite.Size.Width <= size.Width &&
-                   _placement.Top + _sprite.Size.Height <= size.Height;
+            return new GenericFigure(_positions, _positionNumber, new Offset(Placement.Left, Placement.Top + 1));
+        }
 
+        public IFigure MoveLeft()
+        {
+            return new GenericFigure(_positions, _positionNumber, new Offset(Placement.Left - 1, Placement.Top));
+        }
+
+        public IFigure MoveRight()
+        {
+            return new GenericFigure(_positions, _positionNumber, new Offset(Placement.Left + 1, Placement.Top));
         }
 
         public Offset Placement
