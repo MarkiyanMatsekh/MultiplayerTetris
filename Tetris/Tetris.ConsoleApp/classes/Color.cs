@@ -44,6 +44,11 @@ namespace Tetris.Contracts
                 throw new InvalidOperationException("not supported color: " + color);
             return _colorMapping[color];
         }
+
+        public static bool IsEmptyCell(this Color color)
+        {
+            return color == Color.Transparent;
+        }
     }
 
 }

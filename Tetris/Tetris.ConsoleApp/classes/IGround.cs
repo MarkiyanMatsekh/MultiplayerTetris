@@ -1,4 +1,5 @@
 ﻿using System;
+using Tetris.Implementation.Figures;
 
 namespace Tetris.Contracts
 {
@@ -8,26 +9,53 @@ namespace Tetris.Contracts
     public interface IGround : IUIElement
     {
         /// <summary>
-        /// Gets the offset of the current instance of the <see cref="T:Tetris.Contracts.IGround"/> implementation.
-        /// </summary>
-        Offset Placement { get; }
-
-        /// <summary>
         /// Gets the actual size of the current instance of the <see cref="T:Tetris.Contracts.IGround"/> implementation.
         /// </summary>
         Size Size { get; }
 
-        /// <summary>
-        /// Gets or sets the color at the position specified by the horizontal and vertical indexes.
-        /// </summary>
-        /// <param name="x">Specifies the horizintal index. Should be greater or equal zero and less the the width of the canvas.</param>
-        /// <param name="y">Specifies the vertical index. Should be greater or equal zero and less the the height of the canvas.</param>
-        /// <returns></returns>
-        Color this[Int32 x, Int32 y] { get; set; }
+        bool TryAttachFigure(IFigure figure);
 
-        /// <summary>
-        /// Gets the collection of the ground rows
-        /// </summary>
-        IGroundRowCollection Rows { get; }
+        int Peak { get; }
+
+        Color this[int x, int y] { get; }
+    }
+
+    public class Ground : IGround
+    {
+        private readonly Size _size;
+        private readonly ModifyableSprite _sprite;
+        private int _peak;
+
+        public Ground(Size gameFieldSize)
+        {
+            _size = gameFieldSize;
+            _sprite = new ModifyableSprite(new Color[_size.Width, _size.Height]);
+            _peak = 0;
+        }
+
+        public int Peak
+        {
+            get { return _peak; }
+        }
+
+        public Color this[int x, int y]
+        {
+            get { return _sprite[x, y]; }
+        }
+
+        public ISprite GetCurrentView()
+        {
+            return _sprite;
+        }
+
+        public Size Size
+        {
+            get { return _size; }
+        }
+
+        public bool TryAttachFigure(IFigure figure)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -14,8 +14,6 @@ namespace Tetris.Implementation.Figures
         {
             _layout = layout;
         }
-
-
         public Sprite(Color fillColor, int[,] layout)
         {
             if (layout == null)
@@ -29,7 +27,6 @@ namespace Tetris.Implementation.Figures
                     _layout[i, j] = layout[i, j] != 0 ? fillColor : Color.Transparent;
 
         }
-
         public Sprite(IDictionary<short, Color> colorMapping, short[,] layout)
         {
             if (colorMapping == null)
@@ -45,7 +42,7 @@ namespace Tetris.Implementation.Figures
                     _layout[i, j] = colorMapping[layout[i, j]];
 
         }
-
+        
         public Size Size
         {
             get
@@ -58,5 +55,13 @@ namespace Tetris.Implementation.Figures
         {
             get { return _layout[x, y]; }
         }
+    }
+
+    public class ModifyableSprite : Sprite
+    {
+        public ModifyableSprite(Color[,] layout) : base(layout) {}
+        public ModifyableSprite(Color fillColor, int[,] layout) : base(fillColor, layout) {}
+        public ModifyableSprite(IDictionary<short, Color> colorMapping, short[,] layout) : base(colorMapping, layout) {}
+
     }
 }

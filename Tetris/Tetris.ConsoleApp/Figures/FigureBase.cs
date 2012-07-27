@@ -41,6 +41,15 @@ namespace Tetris.Implementation.Figures
             return new GenericFigure(_positions, _positions.GetNextPosition(_positionNumber), _placement);
         }
 
+        public bool IsFullyInside(Size size)
+        {
+            return _placement.Left >= 0 &&
+                   _placement.Top >= 0 &&
+                   _placement.Left + _sprite.Size.Width <= size.Width &&
+                   _placement.Top + _sprite.Size.Height <= size.Height;
+
+        }
+
         public Offset Placement
         {
             get { return _placement; }
@@ -58,6 +67,7 @@ namespace Tetris.Implementation.Figures
 
         protected class PositionsCollection
         {
+            // http://tetris.wikia.com/wiki/SRS
             private const byte NumberOfPositions = 4;
             private readonly ISprite[] _positions;
 
