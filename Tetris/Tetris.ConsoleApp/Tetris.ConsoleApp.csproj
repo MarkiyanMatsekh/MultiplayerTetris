@@ -59,6 +59,8 @@
     <Compile Include="Figures\FigureS.cs" />
     <Compile Include="Figures\FigureT.cs" />
     <Compile Include="Figures\FigureZ.cs" />
+    <Compile Include="Figures\Sprite.cs" />
+    <Compile Include="MatrixExtensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ConsoleRenderer.cs" />

@@ -9,5 +9,7 @@
         /// Gets the <see cref="T:Tetris.Contracts.Offset"/> of the figure relative to the container.
         /// </summary>
         Offset Placement { get; }
+
+        IFigure RotateClockwise();
     }
 } 

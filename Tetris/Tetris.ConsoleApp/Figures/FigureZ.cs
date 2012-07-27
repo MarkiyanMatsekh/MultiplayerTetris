@@ -1,4 +1,5 @@
-﻿using Tetris.ConsoleApp;
+﻿using System.Collections.Generic;
+using Tetris.ConsoleApp;
 using Tetris.Contracts;
 
 namespace Tetris.Implementation.Figures
@@ -6,16 +7,31 @@ namespace Tetris.Implementation.Figures
     public class FigureZ : FigureBase
     {
         private const Color DefaultColor = Color.Red;
+        private static readonly List<int[,]> _bitmap = new List<int[,]>
+        {
+            new [,] {{1,1,0},
+                     {0,1,1},
+                     {0,0,0}
+                    },
+            new [,] {{0,0,1},
+                     {0,1,1},
+                     {0,1,0}
+                    },
+            new [,] {{0,0,0},
+                     {1,1,0},
+                     {0,1,1}
+                    },
+            new [,] {{0,1,0},
+                     {1,1,0},
+                     {1,0,0}
+                    },
+        };
 
         public FigureZ() : this(Offset.Empty) { }
         public FigureZ(int x, int y) : this(new Offset(x,y)) { }
         public FigureZ(Offset placement) : this(placement, DefaultColor) { }
-        public FigureZ(Offset placement, Color color = Color.Blue)
-            : base(placement, color, new[,]
-            {
-                {true, true, false},
-                {false, true, true}
-            })
+        public FigureZ(Offset placement, Color color)
+            : base(placement, new PositionsCollection(color, _bitmap))
         {
         }
     }

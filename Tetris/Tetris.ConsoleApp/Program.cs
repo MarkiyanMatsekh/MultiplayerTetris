@@ -27,7 +27,14 @@ namespace Tetris.ConsoleApp
             foreach (var figure in figures)
             {
                 Console.Write(figure.GetType().Name);
-                renderer.Render(figure, new Offset(0, Console.CursorTop + 1 ));
+                renderer.Render(figure, 
+                    new Offset(0, Console.CursorTop + 1));
+                renderer.Render(figure.RotateClockwise(), 
+                    new Offset(Console.CursorLeft + 1, Console.CursorTop - 1));
+                renderer.Render(figure.RotateClockwise().RotateClockwise(), 
+                    new Offset(Console.CursorLeft + 1, Console.CursorTop - 1));
+                renderer.Render(figure.RotateClockwise().RotateClockwise().RotateClockwise(), 
+                    new Offset(Console.CursorLeft + 1, Console.CursorTop -1 ));
                 Console.WriteLine();
                 Console.WriteLine();
             }
