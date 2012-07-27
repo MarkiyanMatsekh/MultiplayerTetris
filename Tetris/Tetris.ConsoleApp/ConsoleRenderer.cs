@@ -26,12 +26,23 @@ namespace Tetris.ConsoleApp
 
             var consoleColorBackup = Console.BackgroundColor;
 
-            for (int i = 0; i < sprite.Size.Width; i++)
+            var consoleBounds = new { Width = Console.WindowWidth, Height = Console.WindowHeight };
+            for (var i = 0; i < sprite.Size.Width; i++)
             {
-                for (int j = 0; j < sprite.Size.Height; j++)
+                for (var j = 0; j < sprite.Size.Height; j++)
                 {
-                    Console.SetCursorPosition(offset.Left + i,offset.Top + j );
-                    Console.BackgroundColor = sprite[i, j].ToConsoleColor();
+                    var x = offset.Left + i;
+                    var y = offset.Top + j;
+
+                    var brushBackground = sprite[i, j];
+
+                    if (!((x >= 0) && (x < consoleBounds.Width) && (y >= 0)) || brushBackground == Color.Transparent)
+                    {
+                        continue;
+                    }
+
+                    Console.SetCursorPosition(x, y);
+                    Console.BackgroundColor = brushBackground.ToConsoleColor();
                     Console.Write(_brushSymbol);
                 }
             }
