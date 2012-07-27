@@ -42,14 +42,42 @@ namespace Tetris.ConsoleApp.classes
                     collision = ResolveMoveDown(movedFigure);
                     break;
                 case MovementType.Rotate:
-                    //var rotatedFigure = figure.RotateClockwise();
-                    //collision = ResolveRotate(figure);
+                    var rotatedFigure = figure.RotateClockwise();
+                    collision = ResolveRotate(rotatedFigure);
                     break;
                 default:
                     throw new NotImplementedException("unknown movement type: " + move);
             }
 
             return collision;
+        }
+
+        private CollisionType ResolveRotate(IFigure figure)
+        {
+            for (int i = 0; i < figure.Size.Width; i++)
+            {
+                for (int j = 0; j < figure.Size.Height; j++)
+                {
+                    if (figure[i, j].IsEmptyCell())
+                        continue;
+
+                    var absoluteLeft = figure.Placement.Left + i;
+                    var absoluteTop = figure.Placement.Top + j;
+
+                    if (absoluteLeft > _gameField.Size.Width - 1)
+                        return CollisionType.Borders;
+
+                    if (absoluteLeft < 0)
+                        return CollisionType.Borders;
+
+                    if (absoluteTop > _gameField.Size.Height - 1)
+                        return CollisionType.Borders;
+
+                    if (!_ground[absoluteLeft, absoluteTop].IsEmptyCell())
+                        return CollisionType.Ground;
+                }
+            }
+            return CollisionType.None;
         }
 
         private CollisionType ResolveRowAdded()
@@ -63,7 +91,7 @@ namespace Tetris.ConsoleApp.classes
             {
                 for (int j = 0; j < figure.Size.Height; j++)
                 {
-                    if (figure[i,j].IsEmptyCell())
+                    if (figure[i, j].IsEmptyCell())
                         continue;
 
                     var absoluteLeft = figure.Placement.Left + i;
@@ -72,7 +100,7 @@ namespace Tetris.ConsoleApp.classes
                     if (absoluteLeft > _gameField.Size.Width - 1)
                         return CollisionType.Borders;
 
-                    if (!_ground[absoluteLeft,absoluteTop].IsEmptyCell())
+                    if (!_ground[absoluteLeft, absoluteTop].IsEmptyCell())
                         return CollisionType.Ground;
                 }
             }
@@ -85,7 +113,7 @@ namespace Tetris.ConsoleApp.classes
             {
                 for (int j = 0; j < figure.Size.Height; j++)
                 {
-                    if (figure[i,j].IsEmptyCell())
+                    if (figure[i, j].IsEmptyCell())
                         continue;
 
                     var absoluteLeft = figure.Placement.Left + i;
@@ -94,7 +122,7 @@ namespace Tetris.ConsoleApp.classes
                     if (absoluteLeft < 0)
                         return CollisionType.Borders;
 
-                    if (!_ground[absoluteLeft,absoluteTop].IsEmptyCell())
+                    if (!_ground[absoluteLeft, absoluteTop].IsEmptyCell())
                         return CollisionType.Ground;
                 }
             }
@@ -107,7 +135,7 @@ namespace Tetris.ConsoleApp.classes
             {
                 for (int j = 0; j < figure.Size.Height; j++)
                 {
-                    if (figure[i,j].IsEmptyCell())
+                    if (figure[i, j].IsEmptyCell())
                         continue;
 
                     // exact coordinates of cell
@@ -115,11 +143,11 @@ namespace Tetris.ConsoleApp.classes
                     var absoluteY = figure.Placement.Top + j;
                     if (absoluteY > _gameField.Size.Height - 1)
                         return CollisionType.Borders; // maybe return Ground?
-                    
+
                     if (absoluteY < 0)
                         continue;
 
-                    if (_ground[absoluteX, absoluteY].IsEmptyCell()) 
+                    if (_ground[absoluteX, absoluteY].IsEmptyCell())
                         continue;
 
                     return absoluteX < 0 ? CollisionType.Critical : CollisionType.Ground;

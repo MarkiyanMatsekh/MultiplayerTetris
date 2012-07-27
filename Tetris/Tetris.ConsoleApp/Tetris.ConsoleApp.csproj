@@ -39,6 +39,7 @@
   <ItemGroup>
     <Compile Include="classes\CollisisonDetector.cs" />
     <Compile Include="classes\Color.cs" />
+    <Compile Include="classes\GameField.cs" />
     <Compile Include="classes\ICanvas.cs" />
     <Compile Include="classes\IFigure.cs" />
     <Compile Include="classes\IGameField.cs" />
