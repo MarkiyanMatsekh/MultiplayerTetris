@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using Tetris.Core.GameObjects;
 
-namespace Tetris.Core.Figures
+namespace Tetris.Core.GameObjects.Figures
 {
     public class FigureS : FigureBase
     {

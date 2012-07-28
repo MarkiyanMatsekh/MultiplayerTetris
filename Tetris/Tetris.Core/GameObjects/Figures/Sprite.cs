@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Tetris.Core.GameContracts;
-using Tetris.Core.GameObjects;
 
-namespace Tetris.Core.Figures
+namespace Tetris.Core.GameObjects.Figures
 {
     public class Sprite : ISprite
     {

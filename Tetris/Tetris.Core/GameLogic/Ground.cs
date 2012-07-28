@@ -1,7 +1,7 @@
 using System;
-using Tetris.Core.Figures;
 using Tetris.Core.GameContracts;
 using Tetris.Core.GameObjects;
+using Tetris.Core.GameObjects.Figures;
 
 namespace Tetris.Core.GameLogic
 {

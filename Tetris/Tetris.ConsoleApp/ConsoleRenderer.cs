@@ -17,11 +17,6 @@ namespace Tetris.ConsoleApp
             _brushSymbol = brushSymbol;
         }
 
-        public void Clear()
-        {
-            Console.Clear();
-        }
-
         public void Render(ISprite sprite)
         {
             Render(sprite, Offset.Empty);

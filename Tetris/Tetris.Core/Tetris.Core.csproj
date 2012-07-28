@@ -34,15 +34,15 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Figures\FigureBase.cs" />
-    <Compile Include="Figures\FigureI.cs" />
-    <Compile Include="Figures\FigureJ.cs" />
-    <Compile Include="Figures\FigureL.cs" />
-    <Compile Include="Figures\FigureO.cs" />
-    <Compile Include="Figures\FigureS.cs" />
-    <Compile Include="Figures\FigureT.cs" />
-    <Compile Include="Figures\FigureZ.cs" />
-    <Compile Include="Figures\Sprite.cs" />
+    <Compile Include="GameObjects\Figures\FigureBase.cs" />
+    <Compile Include="GameObjects\Figures\FigureI.cs" />
+    <Compile Include="GameObjects\Figures\FigureJ.cs" />
+    <Compile Include="GameObjects\Figures\FigureL.cs" />
+    <Compile Include="GameObjects\Figures\FigureO.cs" />
+    <Compile Include="GameObjects\Figures\FigureS.cs" />
+    <Compile Include="GameObjects\Figures\FigureT.cs" />
+    <Compile Include="GameObjects\Figures\FigureZ.cs" />
+    <Compile Include="GameObjects\Figures\Sprite.cs" />
     <Compile Include="GameLogic\CollisisonDetector.cs" />
     <Compile Include="GameLogic\GameEngine.cs" />
     <Compile Include="GameLogic\GameField.cs" />
