@@ -32,14 +32,14 @@ namespace Tetris.Core.GameLogic
                     // dont allow this move
                     return;
                 case CollisionType.Critical:
-                    // todo: indicate the end of the game
+                    _inputSerializer.Enqueue(MoveType.GameOver);
                     return;
                     break;
                 case CollisionType.Ground:
                     if (move == MoveType.MoveDown)
                     {
                         _gameField.Ground.AttachFigure(_gameField.CurrentFigure);
-                        _gameField.SetCurrentFigure(new FigureJ(2,0)); // get from generator
+                        _gameField.SetCurrentFigure(new FigureJ(2, 0)); // get from generator
 
                         moveHandled = true;
                     }
@@ -69,8 +69,10 @@ namespace Tetris.Core.GameLogic
                         break;
                     case MoveType.RowAdded:
                         break;
+                    case MoveType.GameOver:
+                        throw new InvalidOperationException("move handler should not handle game over move");
                     default:
-                        throw new ArgumentOutOfRangeException("move");
+                        throw new ArgumentOutOfRangeException("not supported move" + move);
                 }
             }
 

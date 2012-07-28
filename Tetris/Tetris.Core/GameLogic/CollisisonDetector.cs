@@ -160,7 +160,10 @@ namespace Tetris.Core.GameLogic
                 if (_ground[absoluteX, absoluteY].IsEmptyCell())
                     return true;
 
-                collision = absoluteX < 0 ? CollisionType.Critical : CollisionType.Ground;
+                collision = CollisionType.Ground;
+                if (figure.Placement.Top == 1) // a little bad assumpotion that figures always start at 0, and thatn moves down by 1
+                    collision = CollisionType.Critical;
+                
                 return false;
             });
             return collision;

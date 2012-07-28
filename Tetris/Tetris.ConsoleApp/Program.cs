@@ -11,7 +11,14 @@ namespace Tetris.ConsoleApp
     {
         static void Main(string[] args)
         {
-            var engine = new GameEngine(new Size(10, 10), new ConsoleInputListener(), new ConsoleRenderer());
+            var engine = new GameEngine(new Size(10, 10), 
+                                        new ConsoleInputListener(), 
+                                        new ConsoleRenderer(),
+                                        () =>
+                                            {
+                                                Console.Clear();
+                                                Console.WriteLine("Game Over!");
+                                            });
 
             engine.Start();
         }
