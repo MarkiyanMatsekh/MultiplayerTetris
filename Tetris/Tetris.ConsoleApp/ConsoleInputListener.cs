@@ -17,14 +17,14 @@ namespace Tetris.ConsoleApp
             {ConsoleKey.Spacebar, MoveType.Rotate}
         };
 
-        private IInputSerializer _serializer;
+        private IInputQueue _queue;
 
         private Thread _listeningThread;
         private bool _continueRunning;
 
-        public void BindInputSerializer(IInputSerializer serializer)
+        public void BindInputSerializer(IInputQueue queue)
         {
-            _serializer = serializer;
+            _queue = queue;
         }
 
         public bool IsListening
@@ -34,8 +34,8 @@ namespace Tetris.ConsoleApp
 
         public void Start()
         {
-            if (_serializer == null)
-                throw new InvalidOperationException("Cannot start listener without binding input serializer");
+            if (_queue == null)
+                throw new InvalidOperationException("Cannot start listener without binding input queue");
 
             if (_listeningThread != null)
                 throw new InvalidOperationException("listener is already running");
@@ -67,7 +67,7 @@ namespace Tetris.ConsoleApp
 
 
                 if (_mapping.TryGetValue(key.Key,out move))
-                    _serializer.Enqueue(move);
+                    _queue.Enqueue(move);
             } 
         }
     }

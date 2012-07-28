@@ -6,13 +6,11 @@ namespace Tetris.Core.GameLogic
 {
     public class CollisionDetector
     {
-        private readonly Ground _ground;
         private readonly GameField _gameField;
 
         public CollisionDetector(GameField gameField)
         {
             _gameField = gameField;
-            _ground = gameField.Ground;
         }
 
         public CollisionType EvaluateNextMove(MoveType move, IFigure figure)
@@ -74,7 +72,7 @@ namespace Tetris.Core.GameLogic
                     collision = CollisionType.Borders;
                     return false;
                 }
-                if (!_ground[absoluteLeft, absoluteTop].IsEmptyCell())
+                if (!_gameField.GroundView[absoluteLeft, absoluteTop].IsEmptyCell())
                 {
                     collision = CollisionType.Ground;
                     return false;
@@ -86,7 +84,7 @@ namespace Tetris.Core.GameLogic
 
         private CollisionType ResolveRowAdded()
         {
-            return _ground.Peak < 1 ? CollisionType.Critical : CollisionType.None;
+            return _gameField.GroundPeak < 1 ? CollisionType.Critical : CollisionType.None;
         }
 
         private CollisionType ResolveMoveRight(IFigure figure)
@@ -104,7 +102,7 @@ namespace Tetris.Core.GameLogic
                     return false;
                 }
 
-                if (!_ground[absoluteLeft, absoluteTop].IsEmptyCell())
+                if (!_gameField.GroundView[absoluteLeft, absoluteTop].IsEmptyCell())
                 {
                     collision = CollisionType.Ground;
                     return false;
@@ -129,7 +127,7 @@ namespace Tetris.Core.GameLogic
                     return false;
                 }
 
-                if (!_ground[absoluteLeft, absoluteTop].IsEmptyCell())
+                if (!_gameField.GroundView[absoluteLeft, absoluteTop].IsEmptyCell())
                 {
                     collision = CollisionType.Ground;
                     return false;
@@ -157,7 +155,7 @@ namespace Tetris.Core.GameLogic
                 if (absoluteY < 0)
                     return true;
 
-                if (_ground[absoluteX, absoluteY].IsEmptyCell())
+                if (_gameField.GroundView[absoluteX, absoluteY].IsEmptyCell())
                     return true;
 
                 collision = CollisionType.Ground;

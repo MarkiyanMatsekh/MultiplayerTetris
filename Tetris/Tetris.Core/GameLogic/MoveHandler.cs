@@ -9,14 +9,12 @@ namespace Tetris.Core.GameLogic
     {
         private readonly GameField _gameField;
         private readonly CollisionDetector _collisionDetector;
-        private readonly IInputSerializer _inputSerializer;
         private readonly IRenderer _renderer;
 
-        public MoveHandler(GameField gameField, IInputSerializer inputSerializer, IRenderer renderer)
+        public MoveHandler(GameField gameField, IRenderer renderer)
         {
             _gameField = gameField;
             _collisionDetector = new CollisionDetector(_gameField);
-            _inputSerializer = inputSerializer;
             _renderer = renderer;
         }
 
@@ -32,13 +30,12 @@ namespace Tetris.Core.GameLogic
                     // dont allow this move
                     return;
                 case CollisionType.Critical:
-                    _inputSerializer.Enqueue(MoveType.GameOver);
                     return;
                     break;
                 case CollisionType.Ground:
                     if (move == MoveType.MoveDown)
                     {
-                        _gameField.Ground.AttachFigure(_gameField.CurrentFigure);
+                        _gameField.AttachFigureToTheGround(_gameField.CurrentFigure);
                         _gameField.SetCurrentFigure(new FigureJ(2, 0)); // get from generator
 
                         moveHandled = true;
@@ -69,8 +66,6 @@ namespace Tetris.Core.GameLogic
                         break;
                     case MoveType.RowAdded:
                         break;
-                    case MoveType.GameOver:
-                        throw new InvalidOperationException("move handler should not handle game over move");
                     default:
                         throw new ArgumentOutOfRangeException("not supported move" + move);
                 }

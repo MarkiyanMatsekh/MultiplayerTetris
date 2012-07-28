@@ -5,7 +5,7 @@ namespace Tetris.Core.GameContracts
     public interface IUserInputListener
     {
         // todo: this stinks a lot. try figure out smth better
-        void BindInputSerializer(IInputSerializer serializer);
+        void BindInputSerializer(IInputQueue queue);
         bool IsListening { get; }
         void Start();
         void Stop();

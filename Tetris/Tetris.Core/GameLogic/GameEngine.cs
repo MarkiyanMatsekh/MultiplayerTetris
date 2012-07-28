@@ -10,48 +10,42 @@ namespace Tetris.Core.GameLogic
         
         private readonly MoveHandler _moveHandler;
         private readonly GranularTimer _timer;
-        private readonly InputSerializer _inputSerializer;
+        private readonly InputQueue _inputQueue;
         private readonly Action _onGameOver;
 
         public GameEngine(Size fieldSize, IUserInputListener listener, IRenderer renderer, Action onGameOver = null )
         {
-            _inputSerializer = new InputSerializer(HandleMovement);
-            _moveHandler = new MoveHandler(new GameField(fieldSize), _inputSerializer, renderer);
+            _inputQueue = new InputQueue(HandleMovement);
             _timer = new GranularTimer(OnTimerCallback, 1000, 4);
             _onGameOver = onGameOver;
+            var gameField = new GameField(fieldSize, _inputQueue);
+            _moveHandler = new MoveHandler(gameField, renderer);
 
             _inputListener = listener;
-            _inputListener.BindInputSerializer(_inputSerializer);
+            _inputListener.BindInputSerializer(_inputQueue);
         }
 
         public void Start()
         {
             _timer.Start();
             _inputListener.Start();
-            _inputSerializer.Start();
+            _inputQueue.Start();
         }
 
         public void Stop()
         {
             _timer.Stop();
             _inputListener.Stop();
-            _inputSerializer.Stop();
+            _inputQueue.Stop();
         }
 
         private void OnTimerCallback()
         {
-            _inputSerializer.Enqueue(MoveType.MoveDown);
+            _inputQueue.Enqueue(MoveType.MoveDown);
         }
 
         private void HandleMovement(MoveType move)
         {
-            //game over is NOT a move, so figure out better strategy
-            if (move == MoveType.GameOver)
-            {
-                Stop();
-                if (_onGameOver != null)
-                    _onGameOver();
-            }
             _moveHandler.HandleMove(move);
         }
     }

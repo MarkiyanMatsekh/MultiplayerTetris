@@ -35,6 +35,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameObjects\CollisionType.cs" />
+    <Compile Include="GameObjects\ModifyableSprite.cs" />
     <Compile Include="GameObjects\MoveType.cs" />
     <Compile Include="GameObjects\Figures\FigureBase.cs" />
     <Compile Include="GameObjects\Figures\FigureI.cs" />
@@ -44,13 +45,12 @@
     <Compile Include="GameObjects\Figures\FigureS.cs" />
     <Compile Include="GameObjects\Figures\FigureT.cs" />
     <Compile Include="GameObjects\Figures\FigureZ.cs" />
-    <Compile Include="GameObjects\Figures\Sprite.cs" />
+    <Compile Include="GameObjects\Sprite.cs" />
     <Compile Include="GameLogic\CollisisonDetector.cs" />
     <Compile Include="GameLogic\GameEngine.cs" />
     <Compile Include="GameLogic\GameField.cs" />
     <Compile Include="GameLogic\GranularTimer.cs" />
     <Compile Include="GameLogic\InputSerializer.cs" />
-    <Compile Include="GameLogic\Ground.cs" />
     <Compile Include="Helpers\ColorExtensions.cs" />
     <Compile Include="GameContracts\IUserInputListener.cs" />
     <Compile Include="GameLogic\MoveHandler.cs" />

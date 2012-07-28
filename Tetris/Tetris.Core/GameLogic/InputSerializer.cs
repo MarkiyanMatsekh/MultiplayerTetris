@@ -4,12 +4,12 @@ using System.Threading;
 
 namespace Tetris.Core.GameLogic
 {
-    public interface IInputSerializer
+    public interface IInputQueue
     {
         void Enqueue(MoveType move);
     }
 
-    public class InputSerializer : IInputSerializer
+    public class InputQueue : IInputQueue
     {
         private readonly Action<MoveType> _callback;
         private readonly ConcurrentQueue<MoveType> _movesQueue;
@@ -17,7 +17,7 @@ namespace Tetris.Core.GameLogic
         private Thread _runningThread;
         private bool _continueRunning;
 
-        public InputSerializer(Action<MoveType> callback)
+        public InputQueue(Action<MoveType> callback)
         {
             _callback = callback;
             _movesQueue = new ConcurrentQueue<MoveType>();
@@ -31,7 +31,7 @@ namespace Tetris.Core.GameLogic
         public void Start()
         {
             if (_runningThread != null)
-                throw new InvalidOperationException("InputSerializer is already running");
+                throw new InvalidOperationException("InputQueue is already running");
 
             _runningThread = new Thread(ReadFromQueue);
             _runningThread.Name = "Input Serializer Thread";

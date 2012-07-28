@@ -12,7 +12,7 @@ namespace Tetris.ConsoleApp
     {
         private readonly char _brushSymbol;
 
-        public ConsoleRenderer(char brushSymbol = '0')
+        public ConsoleRenderer(char brushSymbol = ' ')
         {
             _brushSymbol = brushSymbol;
         }
