@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Tetris.ConsoleApp.classes;
-using Tetris.Contracts;
-using Tetris.Implementation.Figures;
+using Tetris.Core.GameLogic;
+using Tetris.Core.GameObjects;
 
 namespace Tetris.ConsoleApp
 {
@@ -12,7 +11,7 @@ namespace Tetris.ConsoleApp
     {
         static void Main(string[] args)
         {
-            var engine = new GameEngine();
+            var engine = new GameEngine(new Size(10, 10), new ConsoleInputListener(), new ConsoleRenderer());
 
             engine.Start();
         }

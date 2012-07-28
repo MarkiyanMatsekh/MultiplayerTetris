@@ -38,42 +38,17 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="classes\CollisisonDetector.cs" />
-    <Compile Include="classes\Color.cs" />
-    <Compile Include="classes\GameEngine.cs" />
-    <Compile Include="classes\GameField.cs" />
-    <Compile Include="classes\GranularTimer.cs" />
-    <Compile Include="classes\ICanvas.cs" />
-    <Compile Include="classes\IFigure.cs" />
-    <Compile Include="classes\IGameField.cs" />
-    <Compile Include="classes\IGround.cs" />
-    <Compile Include="classes\IGroundRow.cs" />
-    <Compile Include="classes\IGroundRowCollection.cs" />
-    <Compile Include="classes\InputSerializer.cs" />
-    <Compile Include="classes\ISprite.cs" />
-    <Compile Include="classes\ISpriteRenderer.cs" />
-    <Compile Include="classes\IUIElement.cs" />
-    <Compile Include="classes\IUserInputListener.cs" />
-    <Compile Include="classes\MoveHandler.cs" />
-    <Compile Include="classes\Offset.cs" />
-    <Compile Include="classes\RotationDirection.cs" />
-    <Compile Include="classes\Size.cs" />
-    <Compile Include="classes\UserInputListener.cs" />
-    <Compile Include="Figures\FigureBase.cs" />
-    <Compile Include="Figures\FigureI.cs" />
-    <Compile Include="Figures\FigureJ.cs" />
-    <Compile Include="Figures\FigureL.cs" />
-    <Compile Include="Figures\FigureO.cs" />
-    <Compile Include="Figures\FigureS.cs" />
-    <Compile Include="Figures\FigureT.cs" />
-    <Compile Include="Figures\FigureZ.cs" />
-    <Compile Include="Figures\Sprite.cs" />
-    <Compile Include="MatrixExtensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ConsoleRenderer.cs" />
+    <Compile Include="ConsoleInputListener.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Tetris.Core\Tetris.Core.csproj">
+      <Project>{F177698F-EFE8-4FE4-9544-8EF6BD228B48}</Project>
+      <Name>Tetris.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

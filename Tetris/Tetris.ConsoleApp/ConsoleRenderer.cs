@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Tetris.Contracts;
+using Tetris.Core.GameContracts;
+using Tetris.Core.GameObjects;
+using Tetris.Core.Helpers;
 
 namespace Tetris.ConsoleApp
 {
-    public class ConsoleRenderer
+    public class ConsoleRenderer : IRenderer
     {
         private readonly char _brushSymbol;
 
@@ -20,6 +22,11 @@ namespace Tetris.ConsoleApp
             Console.Clear();
         }
 
+        public void Render(ISprite sprite)
+        {
+            Render(sprite, Offset.Empty);
+        }
+
         public void Render(ISprite sprite, Offset offset)
         {
             if (sprite == null)
@@ -28,6 +35,8 @@ namespace Tetris.ConsoleApp
                 throw new ArgumentNullException("offset");
 
             var consoleColorBackup = Console.BackgroundColor;
+
+            Console.Clear(); // yeaks!
 
             var consoleBounds = new { Width = Console.WindowWidth, Height = Console.WindowHeight };
             for (var i = 0; i < sprite.Size.Width; i++)
