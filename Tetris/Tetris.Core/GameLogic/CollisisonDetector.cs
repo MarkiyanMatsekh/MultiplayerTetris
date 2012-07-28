@@ -4,15 +4,12 @@ using Tetris.Core.Helpers;
 
 namespace Tetris.Core.GameLogic
 {
-    public enum CollisionType { Critical, Borders, Ground, None }
-    public enum MoveType { Rotate, MoveLeft, MoveRight, MoveDown, TossDown, RowAdded }
-
     public class CollisionDetector
     {
-        private readonly IGround _ground;
-        private readonly IGameField _gameField;
+        private readonly Ground _ground;
+        private readonly GameField _gameField;
 
-        public CollisionDetector(IGameField gameField)
+        public CollisionDetector(GameField gameField)
         {
             _gameField = gameField;
             _ground = gameField.Ground;
@@ -39,6 +36,9 @@ namespace Tetris.Core.GameLogic
                     movedFigure = figure.MoveDown();
                     collision = ResolveMoveDown(movedFigure);
                     break;
+                case MoveType.TossDown:
+                    // for now do nothing
+                    break;
                 case MoveType.Rotate:
                     var rotatedFigure = figure.RotateClockwise();
                     collision = ResolveRotate(rotatedFigure);
@@ -52,29 +52,35 @@ namespace Tetris.Core.GameLogic
 
         private CollisionType ResolveRotate(IFigure figure)
         {
-            for (int i = 0; i < figure.Size.Width; i++)
+            var collision = CollisionType.None;
+
+            figure.ForEachNonEmptyCell((i, j) =>
             {
-                for (int j = 0; j < figure.Size.Height; j++)
+                var absoluteLeft = figure.Placement.Left + i;
+                var absoluteTop = figure.Placement.Top + j;
+
+                if (absoluteLeft > _gameField.Size.Width - 1)
                 {
-                    if (figure[i, j].IsEmptyCell())
-                        continue;
-
-                    var absoluteLeft = figure.Placement.Left + i;
-                    var absoluteTop = figure.Placement.Top + j;
-
-                    if (absoluteLeft > _gameField.Size.Width - 1)
-                        return CollisionType.Borders;
-
-                    if (absoluteLeft < 0)
-                        return CollisionType.Borders;
-
-                    if (absoluteTop > _gameField.Size.Height - 1)
-                        return CollisionType.Borders;
-
-                    if (!_ground[absoluteLeft, absoluteTop].IsEmptyCell())
-                        return CollisionType.Ground;
+                    collision = CollisionType.Borders;
+                    return false;
                 }
-            }
+                if (absoluteLeft < 0)
+                {
+                    collision = CollisionType.Borders;
+                    return false;
+                }
+                if (absoluteTop > _gameField.Size.Height - 1)
+                {
+                    collision = CollisionType.Borders;
+                    return false;
+                }
+                if (!_ground[absoluteLeft, absoluteTop].IsEmptyCell())
+                {
+                    collision = CollisionType.Ground;
+                    return false;
+                }
+                return true;
+            });
             return CollisionType.None;
         }
 
@@ -85,73 +91,79 @@ namespace Tetris.Core.GameLogic
 
         private CollisionType ResolveMoveRight(IFigure figure)
         {
-            for (int i = 0; i < figure.Size.Width; i++)
+            var collision = CollisionType.None;
+
+            figure.ForEachNonEmptyCell((i, j) =>
             {
-                for (int j = 0; j < figure.Size.Height; j++)
+                var absoluteLeft = figure.Placement.Left + i;
+                var absoluteTop = figure.Placement.Top + j;
+
+                if (absoluteLeft > _gameField.Size.Width - 1)
                 {
-                    if (figure[i, j].IsEmptyCell())
-                        continue;
-
-                    var absoluteLeft = figure.Placement.Left + i;
-                    var absoluteTop = figure.Placement.Top + j;
-
-                    if (absoluteLeft > _gameField.Size.Width - 1)
-                        return CollisionType.Borders;
-
-                    if (!_ground[absoluteLeft, absoluteTop].IsEmptyCell())
-                        return CollisionType.Ground;
+                    collision = CollisionType.Borders;
+                    return false;
                 }
-            }
-            return CollisionType.None;
+
+                if (!_ground[absoluteLeft, absoluteTop].IsEmptyCell())
+                {
+                    collision = CollisionType.Ground;
+                    return false;
+                }
+                return true;
+            });
+            return collision;
         }
 
         private CollisionType ResolveMoveLeft(IFigure figure)
         {
-            for (int i = 0; i < figure.Size.Width; i++)
+            var collision = CollisionType.None;
+
+            figure.ForEachNonEmptyCell((i, j) =>
             {
-                for (int j = 0; j < figure.Size.Height; j++)
+                var absoluteLeft = figure.Placement.Left + i;
+                var absoluteTop = figure.Placement.Top + j;
+
+                if (absoluteLeft < 0)
                 {
-                    if (figure[i, j].IsEmptyCell())
-                        continue;
-
-                    var absoluteLeft = figure.Placement.Left + i;
-                    var absoluteTop = figure.Placement.Top + j;
-
-                    if (absoluteLeft < 0)
-                        return CollisionType.Borders;
-
-                    if (!_ground[absoluteLeft, absoluteTop].IsEmptyCell())
-                        return CollisionType.Ground;
+                    collision = CollisionType.Borders;
+                    return false;
                 }
-            }
-            return CollisionType.None;
+
+                if (!_ground[absoluteLeft, absoluteTop].IsEmptyCell())
+                {
+                    collision = CollisionType.Ground;
+                    return false;
+                }
+                return true;
+            });
+            return collision;
         }
 
         private CollisionType ResolveMoveDown(IFigure figure)
         {
-            for (int i = 0; i < figure.Size.Width; i++)
+            var collision = CollisionType.None;
+
+            figure.ForEachNonEmptyCell((i, j) =>
             {
-                for (int j = 0; j < figure.Size.Height; j++)
+                var absoluteX = figure.Placement.Left + i;
+                var absoluteY = figure.Placement.Top + j;
+
+                if (absoluteY > _gameField.Size.Height - 1)
                 {
-                    if (figure[i, j].IsEmptyCell())
-                        continue;
-
-                    // exact coordinates of cell
-                    var absoluteX = figure.Placement.Left + i;
-                    var absoluteY = figure.Placement.Top + j;
-                    if (absoluteY > _gameField.Size.Height - 1)
-                        return CollisionType.Borders; // maybe return Ground?
-
-                    if (absoluteY < 0)
-                        continue;
-
-                    if (_ground[absoluteX, absoluteY].IsEmptyCell())
-                        continue;
-
-                    return absoluteX < 0 ? CollisionType.Critical : CollisionType.Ground;
+                    collision = CollisionType.Ground;
+                    return false;
                 }
-            }
-            return CollisionType.None;
+
+                if (absoluteY < 0)
+                    return true;
+
+                if (_ground[absoluteX, absoluteY].IsEmptyCell())
+                    return true;
+
+                collision = absoluteX < 0 ? CollisionType.Critical : CollisionType.Ground;
+                return false;
+            });
+            return collision;
         }
     }
 }

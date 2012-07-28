@@ -34,6 +34,8 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameObjects\CollisionType.cs" />
+    <Compile Include="GameObjects\MoveType.cs" />
     <Compile Include="GameObjects\Figures\FigureBase.cs" />
     <Compile Include="GameObjects\Figures\FigureI.cs" />
     <Compile Include="GameObjects\Figures\FigureJ.cs" />
@@ -54,12 +56,12 @@
     <Compile Include="GameLogic\MoveHandler.cs" />
     <Compile Include="GameObjects\Color.cs" />
     <Compile Include="GameContracts\IFigure.cs" />
-    <Compile Include="GameContracts\IGround.cs" />
     <Compile Include="GameContracts\ISprite.cs" />
     <Compile Include="GameContracts\IRenderer.cs" />
     <Compile Include="GameContracts\IUIElement.cs" />
     <Compile Include="GameObjects\Offset.cs" />
     <Compile Include="GameObjects\Size.cs" />
+    <Compile Include="Helpers\SpriteExtensions.cs" />
     <Compile Include="Helpers\MatrixExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

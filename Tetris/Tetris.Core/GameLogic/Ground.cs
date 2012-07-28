@@ -2,10 +2,11 @@ using System;
 using Tetris.Core.GameContracts;
 using Tetris.Core.GameObjects;
 using Tetris.Core.GameObjects.Figures;
+using Tetris.Core.Helpers;
 
 namespace Tetris.Core.GameLogic
 {
-    public class Ground : IGround
+    public class Ground : IUIElement
     {
         private readonly Size _size;
         private readonly ModifyableSprite _sprite;
@@ -38,9 +39,16 @@ namespace Tetris.Core.GameLogic
             get { return _size; }
         }
 
-        public bool TryAttachFigure(IFigure figure)
+        public void AttachFigure(IFigure figure)
         {
-            throw new NotImplementedException();
+            figure.ForEachNonEmptyCell((i, j) =>
+            {
+                var cell = _sprite[figure.Placement.Left + i, figure.Placement.Top + j];
+                if (!cell.IsEmptyCell())
+                    throw new InvalidOperationException("can't attach figure to ground - it's already filled");
+                _sprite[figure.Placement.Left + i, figure.Placement.Top + j] = figure[i, j];
+                var a = 5;
+            });
         }
     }
 }

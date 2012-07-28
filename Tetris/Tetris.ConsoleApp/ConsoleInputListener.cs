@@ -13,7 +13,7 @@ namespace Tetris.ConsoleApp
         {
             {ConsoleKey.LeftArrow, MoveType.MoveLeft},
             {ConsoleKey.RightArrow, MoveType.MoveRight},
-            {ConsoleKey.DownArrow, MoveType.TossDown},
+            {ConsoleKey.DownArrow, MoveType.MoveDown},
             {ConsoleKey.Spacebar, MoveType.Rotate}
         };
 
@@ -56,6 +56,7 @@ namespace Tetris.ConsoleApp
 
         private void ReadFromConsole()
         {
+            MoveType move;
             while (true)
             {
                 // todo: use Console.KeyAvailable 
@@ -64,8 +65,9 @@ namespace Tetris.ConsoleApp
                 if (!_continueRunning)
                     break;
 
-                var move = _mapping[key.Key];
-                _serializer.Enqueue(move);
+
+                if (_mapping.TryGetValue(key.Key,out move))
+                    _serializer.Enqueue(move);
             } 
         }
     }

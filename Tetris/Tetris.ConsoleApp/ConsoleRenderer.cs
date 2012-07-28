@@ -12,9 +12,14 @@ namespace Tetris.ConsoleApp
     {
         private readonly char _brushSymbol;
 
-        public ConsoleRenderer(char brushSymbol = ' ')
+        public ConsoleRenderer(char brushSymbol = '0')
         {
             _brushSymbol = brushSymbol;
+        }
+
+        public void Render(IFigure figure)
+        {
+            Render(figure, figure.Placement);
         }
 
         public void Render(ISprite sprite)
@@ -55,11 +60,6 @@ namespace Tetris.ConsoleApp
             }
 
             Console.BackgroundColor = consoleColorBackup;
-        }
-
-        public void Render(IFigure figure)
-        {
-            Render(figure, figure.Placement);
         }
     }
 }
