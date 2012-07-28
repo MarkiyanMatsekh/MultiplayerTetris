@@ -7,6 +7,7 @@ using Tetris.Contracts;
 
 namespace Tetris.Implementation.Figures
 {
+    // immutable
     public abstract class FigureBase : IFigure
     {
         private readonly Offset _placement;

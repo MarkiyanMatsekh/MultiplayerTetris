@@ -2,68 +2,65 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Tetris.Contracts;
 using Tetris.Implementation.Figures;
 
 namespace Tetris.ConsoleApp.classes
 {
+    // currently this class is not reusable after stop. will consider that later
     public class UserInputListener
     {
-        private readonly Dictionary<ConsoleKey, MovementType> _mapping = new Dictionary<ConsoleKey, MovementType>()
+        private static readonly Dictionary<ConsoleKey, MoveType> _mapping = new Dictionary<ConsoleKey, MoveType>()
         {
-            {ConsoleKey.LeftArrow, MovementType.MoveLeft},
-            {ConsoleKey.RightArrow, MovementType.MoveRight},
-            {ConsoleKey.DownArrow, MovementType.MoveDown},
-            {ConsoleKey.Spacebar, MovementType.Rotate}
+            {ConsoleKey.LeftArrow, MoveType.MoveLeft},
+            {ConsoleKey.RightArrow, MoveType.MoveRight},
+            {ConsoleKey.DownArrow, MoveType.TossDown},
+            {ConsoleKey.Spacebar, MoveType.Rotate}
         };
+
+        private readonly IInputSerializer _serializer;
+
+        private Thread _listeningThread;
+        private bool _continueRunning;
+
+        public UserInputListener(IInputSerializer serializer)
+        {
+            _serializer = serializer;
+        }
 
         public void Start()
         {
-            var gameField = new GameField(10, 10);
-            var collisionDetector = new CollisionDetector(gameField);
-            var renderer = new ConsoleRenderer();
+            if (_listeningThread != null)
+                throw new InvalidOperationException("listener is already running");
 
-            gameField.SetCurrentFigure(new FigureJ(0, 3));
-            renderer.Render(gameField.GetCurrentView(), Offset.Empty);
+            _listeningThread = new Thread(ReadFromConsole);
+            _listeningThread.IsBackground = true;
+            _listeningThread.Name = "User Input Listening Thread";
+            
+            _continueRunning = true;
+            _listeningThread.Start();
 
+        }
+
+        public void Stop()
+        {
+            _continueRunning = false;
+        }
+
+        private void ReadFromConsole()
+        {
             while (true)
             {
-                try
-                {
-                    var key = Console.ReadKey();
-                    var move = _mapping[key.Key];
-                    var collision = collisionDetector.EvaluateNextMove(move, gameField.CurrentFigure);
+                // todo: use Console.KeyAvailable 
+                var key = Console.ReadKey();
 
-                    if (collision == CollisionType.Borders)
-                        continue;
+                if (!_continueRunning)
+                    break;
 
-                    switch (key.Key)
-                    {
-                        case ConsoleKey.LeftArrow:
-                            gameField.SetCurrentFigure(gameField.CurrentFigure.MoveLeft());
-                            break;
-                        case ConsoleKey.RightArrow:
-                            gameField.SetCurrentFigure(gameField.CurrentFigure.MoveRight());
-                            break;
-                        case ConsoleKey.DownArrow:
-                            gameField.SetCurrentFigure(gameField.CurrentFigure.MoveDown());
-                            break;
-                        case ConsoleKey.Spacebar:
-                            gameField.SetCurrentFigure(gameField.CurrentFigure.RotateClockwise());
-                            break;
-
-                    }
-
-                    renderer.Clear();
-                    renderer.Render(gameField.GetCurrentView(), Offset.Empty);
-                }
-                catch (Exception ex)
-                {
-                    renderer.Clear();
-                    Console.WriteLine("error occured: {0}", ex.Message);
-                    continue;
-                }
-            }
+                var move = _mapping[key.Key];
+                _serializer.Enqueue(move);
+            } 
         }
     }
 }

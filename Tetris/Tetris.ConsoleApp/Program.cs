@@ -12,9 +12,9 @@ namespace Tetris.ConsoleApp
     {
         static void Main(string[] args)
         {
-            var listener = new UserInputListener();
+            var engine = new GameEngine();
 
-            listener.Start();
+            engine.Start();
         }
     }
 }

@@ -13,6 +13,7 @@ namespace Tetris.ConsoleApp.classes
         {
             _size = new Size(i, i1);
             _ground = new Ground(_size);
+            _currentFigure = new FigureI(3, 0);
         }
 
         public ISprite GetCurrentView()

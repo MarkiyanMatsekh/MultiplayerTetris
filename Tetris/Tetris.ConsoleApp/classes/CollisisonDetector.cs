@@ -7,7 +7,7 @@ using Tetris.Contracts;
 namespace Tetris.ConsoleApp.classes
 {
     public enum CollisionType { Critical, Borders, Ground, None }
-    public enum MovementType { Rotate, MoveLeft, MoveRight, MoveDown, RowAdded }
+    public enum MoveType { Rotate, MoveLeft, MoveRight, MoveDown, TossDown, RowAdded }
 
     public class CollisionDetector
     {
@@ -20,28 +20,28 @@ namespace Tetris.ConsoleApp.classes
             _ground = gameField.Ground;
         }
 
-        public CollisionType EvaluateNextMove(MovementType move, IFigure figure)
+        public CollisionType EvaluateNextMove(MoveType move, IFigure figure)
         {
             var collision = CollisionType.None;
             IFigure movedFigure;
             switch (move)
             {
-                case MovementType.RowAdded:
+                case MoveType.RowAdded:
                     collision = ResolveRowAdded();
                     break;
-                case MovementType.MoveRight:
+                case MoveType.MoveRight:
                     movedFigure = figure.MoveRight();
                     collision = ResolveMoveRight(movedFigure);
                     break;
-                case MovementType.MoveLeft:
+                case MoveType.MoveLeft:
                     movedFigure = figure.MoveLeft();
                     collision = ResolveMoveLeft(movedFigure);
                     break;
-                case MovementType.MoveDown:
+                case MoveType.MoveDown:
                     movedFigure = figure.MoveDown();
                     collision = ResolveMoveDown(movedFigure);
                     break;
-                case MovementType.Rotate:
+                case MoveType.Rotate:
                     var rotatedFigure = figure.RotateClockwise();
                     collision = ResolveRotate(rotatedFigure);
                     break;
