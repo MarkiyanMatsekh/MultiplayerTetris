@@ -5,6 +5,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tetris.ConsoleApp", "Tetris
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tetris.Core", "Tetris.Core\Tetris.Core.csproj", "{F177698F-EFE8-4FE4-9544-8EF6BD228B48}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tetris.Tests", "Tetris.Tests\Tetris.Tests.csproj", "{54DCC559-067B-4533-B02B-6553CE6B322D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B8C13907-BF18-40F3-A69E-1490FB751D94}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +43,16 @@ Global
 		{F177698F-EFE8-4FE4-9544-8EF6BD228B48}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F177698F-EFE8-4FE4-9544-8EF6BD228B48}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F177698F-EFE8-4FE4-9544-8EF6BD228B48}.Release|x86.ActiveCfg = Release|Any CPU
+		{54DCC559-067B-4533-B02B-6553CE6B322D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54DCC559-067B-4533-B02B-6553CE6B322D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54DCC559-067B-4533-B02B-6553CE6B322D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{54DCC559-067B-4533-B02B-6553CE6B322D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{54DCC559-067B-4533-B02B-6553CE6B322D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{54DCC559-067B-4533-B02B-6553CE6B322D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54DCC559-067B-4533-B02B-6553CE6B322D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54DCC559-067B-4533-B02B-6553CE6B322D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{54DCC559-067B-4533-B02B-6553CE6B322D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{54DCC559-067B-4533-B02B-6553CE6B322D}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

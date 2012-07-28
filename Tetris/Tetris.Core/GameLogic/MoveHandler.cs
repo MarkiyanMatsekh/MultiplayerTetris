@@ -10,6 +10,7 @@ namespace Tetris.Core.GameLogic
         private readonly GameField _gameField;
         private readonly CollisionDetector _collisionDetector;
         private readonly IRenderer _renderer;
+        private ISprite _lastGameFieldView;
 
         public MoveHandler(GameField gameField, IRenderer renderer)
         {
@@ -30,13 +31,14 @@ namespace Tetris.Core.GameLogic
                     // dont allow this move
                     return;
                 case CollisionType.Critical:
+                    //TODO: indicate the end of the game!
                     return;
                     break;
                 case CollisionType.Ground:
                     if (move == MoveType.MoveDown)
                     {
                         _gameField.AttachFigureToTheGround(_gameField.CurrentFigure);
-                        _gameField.SetCurrentFigure(new FigureJ(2, 0)); // get from generator
+                        _gameField.SetCurrentFigure(new FigureJ(2, 0)); // get from generator; this can also cause the end of the game. need to be prepared
 
                         moveHandled = true;
                     }
@@ -67,11 +69,18 @@ namespace Tetris.Core.GameLogic
                     case MoveType.RowAdded:
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException("not supported move" + move);
+                        throw new ArgumentOutOfRangeException("not supported move: " + move);
                 }
             }
 
-            _renderer.Render(_gameField.GetCurrentView());
+            var gameFieldView = _gameField.GetCurrentView();
+
+            if (_lastGameFieldView == null)
+                _renderer.Render(gameFieldView);
+            else
+                _renderer.RenderDiff(_lastGameFieldView, gameFieldView);
+
+            _lastGameFieldView = gameFieldView;
         }
     }
 }
