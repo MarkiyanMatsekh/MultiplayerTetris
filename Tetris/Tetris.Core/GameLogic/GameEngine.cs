@@ -5,6 +5,7 @@ using Tetris.Core.GameObjects;
 
 namespace Tetris.Core.GameLogic
 {
+    // todo: add log reader and recreate tests from crashes
     class Logger
     {
         private const string _path = "tetris.log";
