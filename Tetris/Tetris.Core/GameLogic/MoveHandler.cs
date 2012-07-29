@@ -42,8 +42,8 @@ namespace Tetris.Core.GameLogic
 
                         moveHandled = true;
                     }
-                    if (move == MoveType.MoveLeft || move == MoveType.MoveRight)
-                        return;
+                    if (move == MoveType.MoveLeft || move == MoveType.MoveRight || move == MoveType.Rotate)
+                        return; // forbid this move
                     break;
             }
 

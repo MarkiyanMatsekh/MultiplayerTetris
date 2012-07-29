@@ -67,6 +67,11 @@ namespace Tetris.Core.GameLogic
                     collision = CollisionType.Borders;
                     return false;
                 }
+                if (absoluteTop < 0)
+                {
+                    collision = CollisionType.Borders;
+                    return false;
+                }
                 if (absoluteTop > _gameField.Size.Height - 1)
                 {
                     collision = CollisionType.Borders;
@@ -79,7 +84,7 @@ namespace Tetris.Core.GameLogic
                 }
                 return true;
             });
-            return CollisionType.None;
+            return collision;
         }
 
         private CollisionType ResolveRowAdded()
