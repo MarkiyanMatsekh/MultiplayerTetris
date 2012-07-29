@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Tetris.Core.GameContracts;
 using Tetris.Core.GameObjects;
 using Tetris.Core.GameObjects.Figures;
@@ -85,6 +87,56 @@ namespace Tetris.Core.GameLogic
                 _sprite[x, y] = figure[i, j];
                 _peak = Math.Max(_peak, y);
             });
+
+            var fullRows = FindFullRows();
+
+            foreach (var rowNumber in fullRows)
+                RemoveRow(rowNumber);
+
+            var rowsDeleted = fullRows.Length;
+            //todo: notify multiplayer that n rows were deleted
+        }
+
+        private void RemoveRow(int rowNumber)
+        {
+            for (int i = 0; i < _size.Width; i++)
+            {
+                for (int j = rowNumber; j > 0; j--)
+                {
+                    _sprite[i, j] = _sprite[i, j - 1];
+                }
+            }
+        }
+
+        private int[] FindFullRows()
+        {
+            var fullRows = new bool[_size.Height];
+            for (int i = 0; i < fullRows.Length; i++)
+            {
+                fullRows[i] = true;
+            }
+
+            for (int i = 0; i < _size.Height; i++)
+            {
+                for (int j = 0; j < _size.Width; j++)
+                {
+                    if (_sprite[j, i].IsEmptyCell())
+                    {
+                        fullRows[i] = false;
+                        break;
+                    }
+                }
+            }
+
+            var fullRowsIndecies = new List<int>();
+            for (int i = 0; i < fullRows.Length; i++)
+            {
+                if (fullRows[i])
+                    fullRowsIndecies.Add(i);
+            }
+
+            // first we process lower rows(i.e. with higher placement.Top value)
+            return fullRowsIndecies.OrderByDescending(row => row).ToArray();
         }
     }
 }

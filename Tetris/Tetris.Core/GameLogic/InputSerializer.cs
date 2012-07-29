@@ -7,6 +7,7 @@ namespace Tetris.Core.GameLogic
     public interface IInputQueue
     {
         void Enqueue(MoveType move);
+        void Clear();
     }
 
     public class InputQueue : IInputQueue
@@ -26,6 +27,15 @@ namespace Tetris.Core.GameLogic
         public void Enqueue(MoveType move)
         {
             _movesQueue.Enqueue(move);
+        }
+
+        public void Clear()
+        {
+            MoveType notImportantMove;
+            while (!_movesQueue.IsEmpty)
+            {
+                _movesQueue.TryDequeue(out notImportantMove);
+            }
         }
 
         public void Start()

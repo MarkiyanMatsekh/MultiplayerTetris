@@ -44,5 +44,10 @@ namespace Tetris.Core.Helpers
         {
             figure.ForEachCell((i, j) => figure[i, j].IsEmptyCell() || action(i, j));
         }
+
+        public static void ForEachEmptyCell(this ISprite figure, Func<int, int, bool> action)
+        {
+            figure.ForEachCell((i, j) => !figure[i, j].IsEmptyCell() || action(i, j));
+        }
     }
 }

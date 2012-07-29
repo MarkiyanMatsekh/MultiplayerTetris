@@ -23,7 +23,9 @@ namespace Tetris.Core.GameLogic
         {
             bool moveHandled = false;
 
-            var collision = _collisionDetector.EvaluateNextMove(move, _gameField.CurrentFigure);
+            CollisionType collision = _collisionDetector.EvaluateNextMove(move, _gameField.CurrentFigure);
+
+            // var collisionOutcome = // choose what to do with this combination of collision and move
 
             switch (collision)
             {
@@ -39,7 +41,7 @@ namespace Tetris.Core.GameLogic
                     {
                         _gameField.AttachFigureToTheGround(_gameField.CurrentFigure);
                         _gameField.SetCurrentFigure(new FigureJ(2, 0)); // get from generator; this can also cause the end of the game. need to be prepared
-
+                        
                         moveHandled = true;
                     }
                     if (move == MoveType.MoveLeft || move == MoveType.MoveRight || move == MoveType.Rotate)
