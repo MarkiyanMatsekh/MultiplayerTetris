@@ -18,6 +18,7 @@ namespace Tetris.ConsoleApp
         public ConsoleRenderer(char brushSymbol = ' ')
         {
             _brushSymbol = brushSymbol;
+            Console.CursorVisible = false;
         }
 
         public void Render(IFigure figure)
@@ -118,7 +119,7 @@ namespace Tetris.ConsoleApp
 
                     var brushBackground = newSprite[i, j];
 
-                    if ((x < 0) || (x >= consoleBounds.Width) || (y < 0))
+                    if ((x < 0) || (x >= consoleBounds.Width) || (y < 0) || (y >= consoleBounds.Height))
                         continue;
 
                     Console.SetCursorPosition(x, y);

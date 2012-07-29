@@ -60,7 +60,7 @@ namespace Tetris.ConsoleApp
             while (true)
             {
                 // todo: use Console.KeyAvailable 
-                var key = Console.ReadKey();
+                var key = Console.ReadKey(true);
 
                 if (!_continueRunning)
                     break;
