@@ -89,6 +89,7 @@ namespace Tetris.Core.GameLogic
 
         private CollisionType ResolveRowAdded()
         {
+            throw new NotImplementedException("need to take into account current figure position and also redraw it; and indicate the end of the game if it exceeds game field  ");
             return _gameField.GroundPeak < 1 ? CollisionType.Critical : CollisionType.None;
         }
 

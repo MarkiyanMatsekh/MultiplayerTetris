@@ -27,6 +27,7 @@ namespace Tetris.Core.GameLogic
             _queue = queue;
             _sprite = new ModifyableSprite(size);
             _currentFigure = new FigureI(3, 0);
+            _peak = _size.Height;
         }
 
         public ISprite GetCurrentView()
@@ -85,7 +86,7 @@ namespace Tetris.Core.GameLogic
                 if (!cell.IsEmptyCell())
                     throw new InvalidOperationException("can't attach figure to ground - it's already filled");
                 _sprite[x, y] = figure[i, j];
-                _peak = Math.Max(_peak, y);
+                _peak = Math.Min(_peak, y);
             });
 
             var fullRows = FindFullRows();
@@ -104,6 +105,39 @@ namespace Tetris.Core.GameLogic
                 for (int j = rowNumber; j > 0; j--)
                 {
                     _sprite[i, j] = _sprite[i, j - 1];
+                }
+            }
+            _peak++;
+        }
+
+        public void AddRows(int rowsCount)
+        {
+            if (rowsCount < 1)
+                throw new ArgumentOutOfRangeException("rowsCount", "rowsCount should be a positive number");
+
+            if (rowsCount > _size.Height)
+                throw new ArgumentOutOfRangeException("rowsCount", "number of added rows cannot exceed the height of gamefield");
+
+            _peak -= rowsCount;
+
+            for (int i = 0; i < _size.Width; i++)
+            {
+                for (int j = rowsCount; j < _size.Height - rowsCount + 1; j++)
+                {
+                    if (j < 0)
+                        throw new InvalidOperationException("Exceeded game field while adding rows. CollisionDetector should've handle this");
+
+                    _sprite[i, j - rowsCount] = _sprite[i, j];
+                }
+            }
+
+            var addedRowsColor = Color.Azure;
+
+            for (int i = 0; i < _size.Width; i++)
+            {
+                for (int j = 0; j < rowsCount; j++)
+                {
+                    _sprite[i, _size.Height - rowsCount + j] = addedRowsColor;
                 }
             }
         }

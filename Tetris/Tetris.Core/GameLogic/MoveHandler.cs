@@ -69,6 +69,7 @@ namespace Tetris.Core.GameLogic
                         // whether increase the timer or calculate where to put figure
                         break;
                     case MoveType.RowAdded:
+                        _gameField.AddRows(1); // todo: change enum to classes and get numebr of rows
                         break;
                     default:
                         throw new ArgumentOutOfRangeException("not supported move: " + move);
