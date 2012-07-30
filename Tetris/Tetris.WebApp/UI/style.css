@@ -1,0 +1,46 @@
+﻿.wrap
+{
+    margin: 40px auto;
+    width: 400px;
+}
+.game-field-container
+{
+    border: 3px solid #330099;
+    border-radius: 5px;
+    margin: 5px;
+    min-height: 400px;
+    text-align: center;
+}
+.start-stop-game
+{
+    background-color: transparent;
+    border: 2px solid violet;
+    border-radius: 5px;
+    width: 100px;
+    height: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    font-weight: bold;
+}
+.start-game:active
+{
+    border-width: 3px;
+    background-color: #DDDDEE;
+}
+.output {
+    margin-top: 50px;
+    border: 1px solid #FF7777;
+    border-radius: 3px;
+}
+.game-field {
+    margin: 20% auto;
+    width: auto;
+    border-collapse: collapse;
+}
+.game-field-cell {
+    border: 1px solid #330099;
+    border-radius: 2px;
+    width: 20px;
+    height: 20px;
+}

@@ -33,7 +33,7 @@ namespace Tetris.Core.GameObjects
         {
             lock (_lock)
             {
-                _renderers.Add(renderer);
+                _renderers.Remove(renderer);
             }
         }
 

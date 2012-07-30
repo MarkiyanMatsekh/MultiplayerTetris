@@ -5,12 +5,12 @@ using System.Text;
 using Fleck;
 using Newtonsoft.Json;
 using Tetris.Core.GameContracts;
-using Tetris.Core.GameObjects;
 using Tetris.Core.Helpers;
+using Tetris.WebApp.Dto;
 
 namespace Tetris.WebApp
 {
-    public class WebRenderer : IRenderer
+    public class WebRenderer : IRenderer, IEquatable<WebRenderer>
     {
         private readonly IWebSocketConnection _webSocket;
 
@@ -24,7 +24,7 @@ namespace Tetris.WebApp
             if (sprite == null)
                 throw new ArgumentNullException("sprite");
 
-            var dto = new SpriteDTO(sprite);
+            var dto = new RenderMessageDto(sprite);
             var json = JsonConvert.SerializeObject(dto, Formatting.Indented);
             _webSocket.Send(json);
 
@@ -35,44 +35,31 @@ namespace Tetris.WebApp
             var diffCoords = new List<PointDTO>();
             oldSprite.ForEachDifferentCellFrom(newSprite, (i, j) => diffCoords.Add(new PointDTO(i, j, newSprite[i, j])));
 
-            var dto = new SpriteDTO(diffCoords);
-            var json = JsonConvert.SerializeObject(dto, Formatting.Indented);
+            var dto = new RenderMessageDto(diffCoords);
+            var json = dto.ToJson();
             _webSocket.Send(json);
         }
-    }
 
-    public class PointDTO
-    {
-        public int X { get; set; }
-        public int Y { get; set; }
-        public Color Color { get; set; }
 
-        public PointDTO() { }
-        public PointDTO(int x, int y, Color color)
+
+        public bool Equals(WebRenderer other)
         {
-            X = x;
-            Y = y;
-            Color = color;
-        }
-    }
-
-    public class SpriteDTO
-    {
-        public List<PointDTO> Coords;
-
-        public SpriteDTO()
-        {
-            Coords = new List<PointDTO>();
-        }
-        public SpriteDTO(ISprite sprite)
-            : this()
-        {
-            sprite.ForEachCell((i, j) => Coords.Add(new PointDTO(i, j, sprite[i, j])));
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Equals(other._webSocket, _webSocket);
         }
 
-        public SpriteDTO(List<PointDTO> coords)
+        public override bool Equals(object obj)
         {
-            Coords = coords;
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof (WebRenderer)) return false;
+            return Equals((WebRenderer) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return (_webSocket != null ? _webSocket.GetHashCode() : 0);
         }
     }
 }

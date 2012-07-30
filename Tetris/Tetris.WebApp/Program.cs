@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,16 +9,19 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using Fleck;
-using Tetris.ConsoleApp;
+using Tetris.Core.GameContracts;
 using Tetris.Core.GameLogic;
 using Tetris.Core.GameObjects;
 using Tetris.WebApp;
+using Tetris.WebApp.Dto;
 
 class Program
 {
     static void Main()
     {
         FleckLog.Level = LogLevel.Debug;
+
+        var renderers = new ConcurrentDictionary<IWebSocketConnection, IRenderer>();
 
         var proxyRenderer = new ProxyRenderer();
         var allSockets = new List<IWebSocketConnection>();
@@ -28,13 +32,24 @@ class Program
             {
                 Console.WriteLine("Open!");
                 allSockets.Add(socket);
-                proxyRenderer.AddRenderer(new WebRenderer(socket));
+                renderers[socket] = new WebRenderer(socket);
+                proxyRenderer.AddRenderer(renderers[socket]);
+
+                var size = new Size(10, 15);
+                var dto = new InitMessageDto(new SizeDto(size));
+                socket.Send(dto.ToJson());
+
+                var engine = new GameEngine(size, new WebInputListener(), proxyRenderer);
+                engine.Start();
             };
             socket.OnClose = () =>
             {
                 Console.WriteLine("Close!");
                 allSockets.Remove(socket);
-                proxyRenderer.RemoveRenderer(new WebRenderer(socket));
+                proxyRenderer.RemoveRenderer(renderers[socket]);
+
+                IRenderer toRemove;
+                renderers.TryRemove(socket, out toRemove);
             };
             socket.OnMessage = message =>
             {
@@ -43,17 +58,6 @@ class Program
             };
         });
 
-        proxyRenderer.AddRenderer(new ConsoleRenderer());
-
-        var engine = new GameEngine(new Size(10, 10),
-                                new WebInputListener(), 
-                                proxyRenderer,
-                                () =>
-                                {
-                                    Console.Clear();
-                                    Console.WriteLine("Game Over!");
-                                });
-        engine.Start();
-
+        Console.ReadLine();
     }
 }
