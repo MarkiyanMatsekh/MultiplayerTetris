@@ -21,6 +21,8 @@ namespace Tetris.ConsoleApp
                                             });
 
             engine.Start();
+
+            var a = 5;
         }
     }
 }

@@ -46,7 +46,6 @@ namespace Tetris.ConsoleApp
             
             _continueRunning = true;
             _listeningThread.Start();
-
         }
 
         public void Stop()

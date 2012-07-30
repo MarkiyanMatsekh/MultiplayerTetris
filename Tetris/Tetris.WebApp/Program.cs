@@ -8,7 +8,9 @@ using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using Fleck;
+using Tetris.ConsoleApp;
 using Tetris.Core.GameContracts;
 using Tetris.Core.GameLogic;
 using Tetris.Core.GameObjects;
@@ -19,7 +21,7 @@ class Program
 {
     static void Main()
     {
-        FleckLog.Level = LogLevel.Debug;
+        FleckLog.Level = LogLevel.Error;
 
         var renderers = new ConcurrentDictionary<IWebSocketConnection, IRenderer>();
 
@@ -30,21 +32,22 @@ class Program
         {
             socket.OnOpen = () =>
             {
-                Console.WriteLine("Open!");
                 allSockets.Add(socket);
                 renderers[socket] = new WebRenderer(socket);
                 proxyRenderer.AddRenderer(renderers[socket]);
 
-                var size = new Size(10, 15);
-                var dto = new InitMessageDto(new SizeDto(size));
-                socket.Send(dto.ToJson());
+                if (allSockets.Count == 1)
+                {
+                    var size = new Size(10, 15);
+                    var dto = new InitMessageDto(new SizeDto(size));
+                    socket.Send(dto.ToJson());
 
-                var engine = new GameEngine(size, new WebInputListener(), proxyRenderer);
-                engine.Start();
+                    var engine = new GameEngine(size, new ConsoleInputListener(), proxyRenderer);
+                    engine.Start();
+                }
             };
             socket.OnClose = () =>
             {
-                Console.WriteLine("Close!");
                 allSockets.Remove(socket);
                 proxyRenderer.RemoveRenderer(renderers[socket]);
 
@@ -53,11 +56,17 @@ class Program
             };
             socket.OnMessage = message =>
             {
-                Console.WriteLine(message);
-                allSockets.ToList().ForEach(s => s.Send("Echo: " + message));
+                //Console.WriteLine(message);
+                //allSockets.ToList().ForEach(s => s.Send("Echo: " + message));
             };
         });
 
-        Console.ReadLine();
+        while (true)
+        {
+            Thread.Sleep(1000);
+        }
+
+
+       // Console.ReadLine();
     }
 }
