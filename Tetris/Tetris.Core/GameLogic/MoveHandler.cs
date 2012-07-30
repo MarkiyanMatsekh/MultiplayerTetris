@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Tetris.Core.GameContracts;
 using Tetris.Core.GameObjects;
 using Tetris.Core.GameObjects.Figures;
@@ -11,6 +12,18 @@ namespace Tetris.Core.GameLogic
         private readonly CollisionDetector _collisionDetector;
         private readonly IRenderer _renderer;
         private ISprite _lastGameFieldView;
+
+        private static readonly Random _random = new Random();
+        private static readonly List<FigureBase> _randomFigures = new List<FigureBase>
+        {
+            new FigureI(0, 3),
+            new FigureJ(0, 3),
+            new FigureL(0, 3),
+            new FigureO(0, 3),
+            new FigureS(0, 3),
+            new FigureT(0, 3),
+            new FigureZ(0, 3)
+        };
 
         public MoveHandler(GameField gameField, IRenderer renderer)
         {
@@ -40,7 +53,8 @@ namespace Tetris.Core.GameLogic
                     if (move == MoveType.MoveDown)
                     {
                         _gameField.AttachFigureToTheGround(_gameField.CurrentFigure);
-                        _gameField.SetCurrentFigure(new FigureJ(2, 0)); // get from generator; this can also cause the end of the game. need to be prepared
+                        var randomFigure = GetRandomFigure();
+                        _gameField.SetCurrentFigure(randomFigure); // todo: this can also cause the end of the game. need to be prepared
                         
                         moveHandled = true;
                     }
@@ -84,6 +98,11 @@ namespace Tetris.Core.GameLogic
                 _renderer.RenderDiff(_lastGameFieldView, gameFieldView);
 
             _lastGameFieldView = gameFieldView;
+        }
+
+        public static IFigure GetRandomFigure()
+        {
+            return _randomFigures[_random.Next(_randomFigures.Count)];
         }
     }
 }
