@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Tetris Web App</title>
+</head>
+<body>
+    <div>
+        input text here:
+        <input type="text" class="input" value="haleluia"/></div>
+    <div>
+        <input type="button" class="send-button" value="send" /></div>
+    <div>
+        <input type="button" class="connect-button" value="connect" /></div>
+    <div>
+        output: <span class="output" />
+    </div>
+    <script src="jquery-1.7.2.js"></script>
+    <script>
+        (function () {
+            var wsServer = 'ws://localhost:8080/websession';
+            var socket = null; // we'll keep reference here
+
+            var output = $('.output');
+            var input = $('.input');
+            var sendBtn = $('.send-button');
+            var connectBtn = $('.connect-button').click(function () {
+                socket = new WebSocket(wsServer);
+                socket.onopen = function () {
+                    output.text("successfully connected to " + wsServer);
+
+                    socket.onmessage = function (event) {
+                        alert(event.data);
+                        output.text(event.data);
+                    };
+                    sendBtn.click(function () {
+                        var text = input.val();
+                        socket.send(text);
+                    });
+                };
+                socket.onclose = function () {
+                    output.text("couldn't establish connection with " + wsServer);
+                    socket = null;
+                };
+                socket.onclose = function (err) {
+                    output.text("error: " + err);
+                };
+
+            });
+
+
+        })();
+    </script>
+</body>
+</html>

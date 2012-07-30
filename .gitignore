@@ -3,3 +3,5 @@ obj
 *.suo
 *ReSharper*
 *.user
+NUnit.2.6.0.12054
+Fleck.0.9.6.12
