@@ -45,6 +45,7 @@
     <Compile Include="GameObjects\Figures\FigureS.cs" />
     <Compile Include="GameObjects\Figures\FigureT.cs" />
     <Compile Include="GameObjects\Figures\FigureZ.cs" />
+    <Compile Include="GameObjects\ProxyRenderer.cs" />
     <Compile Include="GameObjects\Sprite.cs" />
     <Compile Include="GameLogic\CollisisonDetector.cs" />
     <Compile Include="GameLogic\GameEngine.cs" />

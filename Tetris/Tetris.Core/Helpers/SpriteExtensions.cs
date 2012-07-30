@@ -49,5 +49,22 @@ namespace Tetris.Core.Helpers
         {
             figure.ForEachCell((i, j) => !figure[i, j].IsEmptyCell() || action(i, j));
         }
+
+        public static void ForEachDifferentCellFrom(this ISprite sprite1, ISprite sprite2, Action<int,int> action)
+        {
+            if (sprite2 == null) 
+                throw new ArgumentNullException("sprite2");
+            if (action == null)
+                throw new ArgumentNullException("action");
+
+            if (sprite1.Size != sprite2.Size)
+                throw new InvalidOperationException("cant diff 2 sprites of different size");
+
+            sprite1.ForEachCell((i,j) =>
+                                    {
+                                        if (sprite1[i, j] != sprite2[i, j])
+                                            action(i, j);
+                                    });
+        }
     }
 }

@@ -8,6 +8,9 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using Fleck;
+using Tetris.ConsoleApp;
+using Tetris.Core.GameLogic;
+using Tetris.Core.GameObjects;
 using Tetris.WebApp;
 
 class Program
@@ -15,19 +18,23 @@ class Program
     static void Main()
     {
         FleckLog.Level = LogLevel.Debug;
+
+        var proxyRenderer = new ProxyRenderer();
         var allSockets = new List<IWebSocketConnection>();
-        var server = new Fleck.WebSocketServer("ws://localhost:8080/websession");
+        var server = new WebSocketServer("ws://localhost:8080/websession");
         server.Start(socket =>
         {
             socket.OnOpen = () =>
             {
                 Console.WriteLine("Open!");
                 allSockets.Add(socket);
+                proxyRenderer.AddRenderer(new WebRenderer(socket));
             };
             socket.OnClose = () =>
             {
                 Console.WriteLine("Close!");
                 allSockets.Remove(socket);
+                proxyRenderer.RemoveRenderer(new WebRenderer(socket));
             };
             socket.OnMessage = message =>
             {
@@ -36,23 +43,17 @@ class Program
             };
         });
 
-        var input = Console.ReadLine();
-        while (input != "exit")
-        {
-            foreach (var socket in allSockets.ToList())
-            {
-                socket.Send(input);
-            }
-            input = Console.ReadLine();
-        }
+        proxyRenderer.AddRenderer(new ConsoleRenderer());
 
-        //StupidWebSocketServer.Start();
+        var engine = new GameEngine(new Size(10, 10),
+                                new WebInputListener(), 
+                                proxyRenderer,
+                                () =>
+                                {
+                                    Console.Clear();
+                                    Console.WriteLine("Game Over!");
+                                });
+        engine.Start();
 
-        //var wss = new WebSocketServer(8080,
-        //                      "file://",
-        //                      "ws://localhost:8080/websession");
-        //wss.Start();
-
-        //Console.ReadLine();
     }
 }

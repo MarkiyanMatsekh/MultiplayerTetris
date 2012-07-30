@@ -29,7 +29,6 @@
                     output.text("successfully connected to " + wsServer);
 
                     socket.onmessage = function (event) {
-                        alert(event.data);
                         output.text(event.data);
                     };
                     sendBtn.click(function () {
