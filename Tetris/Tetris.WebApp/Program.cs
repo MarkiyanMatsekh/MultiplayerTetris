@@ -26,6 +26,7 @@ class Program
         var renderers = new ConcurrentDictionary<IWebSocketConnection, IRenderer>();
 
         var proxyRenderer = new ProxyRenderer();
+            proxyRenderer.AddRenderer( new ConsoleRenderer());
         var allSockets = new List<IWebSocketConnection>();
         var server = new WebSocketServer("ws://localhost:8080/websession");
         server.Start(socket =>
@@ -44,6 +45,12 @@ class Program
 
                     var engine = new GameEngine(size, new ConsoleInputListener(), proxyRenderer);
                     engine.Start();
+                }
+                else
+                {
+                    var size = new Size(10, 15);
+                    var dto = new InitMessageDto(new SizeDto(size));
+                    socket.Send(dto.ToJson());
                 }
             };
             socket.OnClose = () =>

@@ -16,13 +16,13 @@ namespace Tetris.Core.GameLogic
         private static readonly Random _random = new Random();
         private static readonly List<FigureBase> _randomFigures = new List<FigureBase>
         {
-            new FigureI(0, 3),
-            new FigureJ(0, 3),
-            new FigureL(0, 3),
-            new FigureO(0, 3),
-            new FigureS(0, 3),
-            new FigureT(0, 3),
-            new FigureZ(0, 3)
+            new FigureI(3, 0),
+            new FigureJ(3, 0),
+            new FigureL(3, 0),
+            new FigureO(3, 0),
+            new FigureS(3, 0),
+            new FigureT(3, 0),
+            new FigureZ(3, 0)
         };
 
         public MoveHandler(GameField gameField, IRenderer renderer)

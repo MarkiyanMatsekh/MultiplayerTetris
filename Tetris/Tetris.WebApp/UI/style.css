@@ -40,7 +40,6 @@
 }
 .game-field-cell {
     border: 1px solid #330099;
-    border-radius: 2px;
     width: 20px;
     height: 20px;
 }

@@ -57,11 +57,11 @@ namespace Tetris.ConsoleApp
             }
             Console.SetCursorPosition(0, 0);
             Console.Write('/');
-            Console.SetCursorPosition(0, width + widthBorderOffset);
+            Console.SetCursorPosition(width + widthBorderOffset, 0);
             Console.Write('\\');
-            Console.SetCursorPosition(height + heightBorderOffset, 0);
+            Console.SetCursorPosition(0, height + heightBorderOffset);
             Console.Write('\\');
-            Console.SetCursorPosition(height + heightBorderOffset, width + widthBorderOffset);
+            Console.SetCursorPosition(width + widthBorderOffset, height + heightBorderOffset);
             Console.Write('/');
 
 
